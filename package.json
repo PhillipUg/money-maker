@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.21.0"
+    "axios": "^0.21.0",
+    "puppeteer": "^5.4.1"
   },
   "devDependencies": {},
   "scripts": {
