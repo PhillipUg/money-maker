@@ -37,9 +37,8 @@ const run = async () => {
   ])
   let count = 0;
   setInterval(async () => {
-    let data;
     try {
-      data = await page.evaluate(() => {
+      let data = await page.evaluate(() => {
         let noReview = document.querySelector('.review-request-announcement-header');
         let hoursLogged = parseInt(document.querySelector('.review-request-logged-hours').textContent);
         function getElementsByText(str, tag = 'a') {
@@ -61,18 +60,13 @@ const run = async () => {
         return {
           result
         }
-      })
+      });
 
-    } catch (error) {
-      console.log('an expection on page.evaluate ', error);
-    }
-    // console.log(data)
-
-    if (data.result) {
-      console.log('No reviews yet')
-      count++;
-    } else {
-      try {
+      if (data.result) {
+        console.log('No reviews yet')
+        count++;
+      } else {
+        // try {
         await page.evaluate(() => {
           function getElementsByText(str, tag = 'a') {
             return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.textContent === str);
@@ -84,15 +78,22 @@ const run = async () => {
           }
         });
 
-        notifyMe()
-      } catch (error) {
-        console.log('an expection on page.evaluate ', error.toString());
+        notifyMe().catch(err => console.log(err))
+        // } catch (error) {
+        // console.log('an expection on ***Second*** page.evaluate ', error);
+        // }
+
       }
+    } catch (error) {
+      console.log('an expection on ***First*** page.evaluate ', error);
+    } finally {
 
+      console.log("reloading browser...", count)
+      await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
     }
-    console.log("reloading browser...", count)
+    // console.log(data)
 
-    await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
+
   }, 3000);
   // await browser.close();
 };
