@@ -52,7 +52,7 @@ const run = async () => {
         }
 
         let result;
-        if (document.body.contains(noReview) || document.body.contains(claimed) || (hoursLogged >= 8)) {
+        if (document.body.contains(noReview) || document.body.contains(claimed) || (hoursLogged >= 10)) {
           result = true
         } else {
           result = false
@@ -66,7 +66,6 @@ const run = async () => {
         console.log('No reviews yet')
         count++;
       } else {
-        // try {
         await page.evaluate(() => {
           function getElementsByText(str, tag = 'a') {
             return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.textContent === str);
@@ -79,9 +78,6 @@ const run = async () => {
         });
 
         notifyMe().catch(err => console.log(err))
-        // } catch (error) {
-        // console.log('an expection on ***Second*** page.evaluate ', error);
-        // }
 
       }
     } catch (error) {
@@ -91,8 +87,6 @@ const run = async () => {
       console.log("reloading browser...", count)
       await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
     }
-    // console.log(data)
-
 
   }, 3000);
   // await browser.close();
