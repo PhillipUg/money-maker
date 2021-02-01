@@ -2,6 +2,7 @@ const axios = require('axios');
 const puppeteer = require('puppeteer');
 const siteUrl = 'https://dashboard.microverse.org/code_review_requests'
 const slackUrl = 'https://hooks.slack.com/services/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';
+require('dotenv').config();
 
 
 
@@ -15,13 +16,13 @@ async function notifyMe() {
 
 const run = async () => {
   console.log("opening browser...")
-  const browser = await puppeteer.launch(); //{headless: false}
+  const browser = await puppeteer.launch({ headless: false }); //{headless: false}
   const page = await browser.newPage();
   console.log("accessing url...")
   await page.goto(siteUrl, { waitUntil: 'networkidle0' });
   console.log("logging in...")
-  await page.type('input[type="email"]', "phillipmusiime@gmail.com")
-  await page.type('input[type="password"]', "XuN6crut")
+  await page.type('input[type="email"]', process.env.EMAIL)
+  await page.type('input[type="password"]', process.env.PASSWORD)
   // await page.screenshot({ path: 'example.png' });
   await Promise.all([
     page.click('button[type="submit"]'),
