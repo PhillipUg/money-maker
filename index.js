@@ -1,7 +1,7 @@
 const axios = require('axios');
 const puppeteer = require('puppeteer');
 const siteUrl = 'https://dashboard.microverse.org/code_review_requests'
-const slackUrl = 'https://hooks.slack.com/services/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';
+const slackUrl = process.env.SLACK_URL
 require('dotenv').config();
 
 
